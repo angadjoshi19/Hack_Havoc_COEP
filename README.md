@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Hack_Havoc_COEP – Smart India Hackathon 2026
 
 **Institute:** COEP Technological University, Pune  
@@ -15,5 +14,3 @@ Hack_Havoc_COEP/
 ├── frontend/      # Web / Mobile app source code
 ├── backend/       # Server logic, APIs & database schemas
 └── ml_engine/     # Machine learning models & notebooks
-=======
->>>>>>> 6f662fe (Simplify home page to plain team description)
