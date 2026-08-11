@@ -1,0 +1,102 @@
+# ==========================================
+# Environment Variables & Secrets (CRITICAL)
+# ==========================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+
+# ==========================================
+# Operating System Junk Files
+# ==========================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthrough.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+
+# ==========================================
+# Node.js / React / Next.js / Vue
+# ==========================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-debug.log*
+.next/
+out/
+build/
+dist/
+.cache/
+
+# ==========================================
+# Python / Machine Learning / AI
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+# Dataset files & heavy trained model weights
+*.csv
+*.h5
+*.pkl
+*.onnx
+*.pt
+*.pth
+datasets/
+
+# ==========================================
+# Mobile (Flutter / React Native / Android / iOS)
+# ==========================================
+.dart_tool/
+.fvm/
+.idea/
+*.iml
+.gradle/
+local.properties
+/android/app/debug
+/android/app/profile
+/android/app/release
+/ios/Pods/
+/ios/Runner.xcworkspace
+
+# ==========================================
+# IDEs & Code Editors
+# ==========================================
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.sublime-project
+*.sublime-workspace
+
+# Exception: Always keep .gitkeep files to retain empty directory structures
+!.gitkeep
