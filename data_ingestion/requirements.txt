@@ -1,0 +1,8 @@
+copernicusmarine
+xarray
+netCDF4
+pandas
+numpy
+scipy
+scikit-learn
+python-dotenv
