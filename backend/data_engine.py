@@ -178,8 +178,7 @@ class OceanDataEngine:
                 # Verify coordinates
                 self.latitudes = self.surface_ds.latitude.values
                 self.longitudes = self.surface_ds.longitude.values
-                if "depth" in self.target_ds.coords:
-                    self.depths = self.target_ds.depth.values
+                # Do not overwrite self.depths from file so it interpolates to 15 standard levels
                 print("[DataEngine] Successfully loaded active datasets into memory.")
             except Exception as e:
                 print(f"[DataEngine] Failed to load existing files ({e}). Regenerating...")
@@ -218,6 +217,8 @@ class OceanDataEngine:
         for c_idx, var_name in enumerate(SURFACE_VARS):
             if var_name in self.surface_ds:
                 var_data = self.surface_ds[var_name].values
+                if var_data.ndim == 3:
+                    var_data = var_data[0] # Take first time step
             else:
                 var_data = np.zeros((n_lat, n_lon), dtype=np.float32)
 
@@ -242,9 +243,13 @@ class OceanDataEngine:
             mean_val = CHANNEL_STATS[var_name]["mean"]
             std_val = CHANNEL_STATS[var_name]["std"]
             norm_patch = (padded - mean_val) / std_val
+            
+            # Handle land masks (NaNs)
+            norm_patch = np.nan_to_num(norm_patch, nan=0.0)
 
             patch[c_idx] = norm_patch
-            raw_surface_vals[var_name] = float(var_data[lat_idx, lon_idx])
+            raw_val = float(var_data[lat_idx, lon_idx])
+            raw_surface_vals[var_name] = 0.0 if np.isnan(raw_val) else raw_val
 
         return patch, raw_surface_vals
 
@@ -252,7 +257,19 @@ class OceanDataEngine:
         """Returns the actual 15-point ground truth temperature profile from dataset."""
         lat_idx, lon_idx = self.get_nearest_indices(lat, lon)
         if "thetao" in self.target_ds:
-            gt_profile = self.target_ds["thetao"].values[:, lat_idx, lon_idx]
+            vals = self.target_ds["thetao"].values
+            if vals.ndim == 4:
+                gt_profile = vals[0, :, lat_idx, lon_idx]
+            else:
+                gt_profile = vals[:, lat_idx, lon_idx]
+                
+            if "depth" in self.target_ds:
+                file_depths = self.target_ds.depth.values
+                if len(file_depths) != len(self.depths):
+                    gt_profile = np.interp(self.depths, file_depths, gt_profile)
+                    
+            # Handle land masks (NaNs)
+            gt_profile = np.nan_to_num(gt_profile, nan=2.8)
         else:
             sst = float(self.surface_ds["thetao"].values[lat_idx, lon_idx])
             z_center = 120.0
