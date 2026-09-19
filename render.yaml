@@ -2,7 +2,7 @@ services:
   - type: web
     name: oceanembed-api
     runtime: python
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install -r requirements.txt && python -c "from backend.model import load_or_initialize_model; load_or_initialize_model()"
     startCommand: python start_backend.py
     envVars:
       - key: PYTHON_VERSION
