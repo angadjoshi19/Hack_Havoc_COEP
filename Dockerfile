@@ -21,5 +21,5 @@ RUN python -c "from backend.model import load_or_initialize_model; load_or_initi
 EXPOSE 8000
 ENV PORT=8000
 
-CMD ["python", "start_servers.py"]
+CMD ["python", "start_backend.py"]
 
